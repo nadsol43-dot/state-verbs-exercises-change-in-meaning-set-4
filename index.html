@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Один глагол — два смысла</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #183238;
+      --muted: #63777a;
+      --paper: #f3f7f5;
+      --green: #137b68;
+      --green-soft: #eaf6f1;
+      --blue: #3267d5;
+      --blue-soft: #edf3ff;
+      --line: #e2ebe7;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      padding: 30px 18px 42px;
+      background:
+        radial-gradient(circle at 92% 5%, rgba(50,103,213,.08), transparent 22rem),
+        radial-gradient(circle at 4% 18%, rgba(19,123,104,.08), transparent 24rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    }
+    .page { width: min(100%, 1060px); margin: 0 auto; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 34px 38px 36px;
+      border-radius: 26px;
+      color: #fff;
+      background: linear-gradient(115deg, #173d43 0%, #173d43 60%, #20565a 100%);
+      box-shadow: 0 14px 34px rgba(24, 50, 56, .14);
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; border: 1px solid rgba(255,255,255,.11); border-radius: 50%; pointer-events: none;
+    }
+    .hero::before { width: 320px; height: 320px; right: -95px; top: -178px; }
+    .hero::after { width: 220px; height: 220px; right: -45px; top: -128px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      margin-bottom: 13px; color: #aee5d5; font-size: 12px; font-weight: 800;
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 3px; border-radius: 9px; background: #67d5b6; }
+    h1 { position: relative; z-index: 1; margin: 0; max-width: 780px; font-size: clamp(32px, 5vw, 49px); line-height: 1.08; letter-spacing: -.035em; }
+    .hero p { position: relative; z-index: 1; max-width: 760px; margin: 15px 0 0; color: #d7e9e5; font-size: 17px; line-height: 1.55; }
+    .flow {
+      position: absolute; z-index: 1; top: 34px; right: 34px;
+      display: flex; align-items: center; gap: 10px; padding: 10px 13px;
+      border: 1px solid rgba(255,255,255,.2); border-radius: 999px;
+      background: rgba(255,255,255,.08); color: #e5f3ef; font-size: 11px; font-weight: 800; letter-spacing: .1em;
+    }
+    .flow .dot { width: 8px; height: 8px; border-radius: 50%; background: #69d5b6; box-shadow: 0 0 0 4px rgba(105,213,182,.13); }
+    .flow .arrow { color: #9fc9c3; font-size: 16px; line-height: 1; }
+
+    .table-head {
+      display: grid; grid-template-columns: minmax(0,1fr) 52px minmax(0,1fr); gap: 0;
+      margin: 24px 0 10px; align-items: stretch;
+    }
+    .head-cell { min-height: 80px; display: flex; align-items: center; gap: 14px; padding: 15px 20px; border-radius: 17px; color: #fff; }
+    .head-cell.simple { background: var(--green); }
+    .head-cell.cont { background: var(--blue); }
+    .head-mark { flex: 0 0 auto; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.45); border-radius: 12px; color: #fff; font-size: 13px; font-weight: 900; }
+    .head-name { font-size: 19px; line-height: 1.18; font-weight: 800; letter-spacing: -.015em; }
+    .head-note { margin-top: 4px; color: rgba(255,255,255,.83); font-size: 13px; line-height: 1.3; }
+    .mid-head { display: grid; place-items: center; color: #97aaa6; font-size: 9px; font-weight: 800; letter-spacing: .1em; writing-mode: vertical-rl; transform: rotate(180deg); }
+
+    .pair {
+      position: relative; display: grid; grid-template-columns: minmax(0,1fr) 52px minmax(0,1fr); align-items: stretch;
+      margin-bottom: 10px;
+    }
+    .example-card {
+      min-width: 0; padding: 17px 19px 16px; border: 1px solid var(--line); border-radius: 17px;
+      background: rgba(255,255,255,.94); box-shadow: 0 3px 10px rgba(24,50,56,.035);
+    }
+    .example-card.simple { grid-column: 1; border-left: 4px solid #74c6ae; }
+    .example-card.cont { grid-column: 3; border-left: 4px solid #8aa9f1; }
+    .sentence { margin: 0; color: #213a3f; font-size: 20px; line-height: 1.38; font-weight: 650; letter-spacing: -.012em; }
+    .simple .verb-word { color: var(--green); }
+    .cont .verb-word { color: var(--blue); }
+    .meaning { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.42; }
+    .meaning strong { color: #344f53; font-weight: 700; }
+    .verb-pill {
+      position: absolute; z-index: 2; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      min-width: 62px; padding: 7px 8px; border: 1px solid #e0e9e6; border-radius: 999px;
+      background: #f3f7f5; color: #687d7b; text-align: center; font-size: 10px; line-height: 1.1; font-weight: 900; letter-spacing: .08em;
+      box-shadow: 0 2px 5px rgba(24,50,56,.04);
+    }
+    .mobile-type { display: none; }
+
+    .be-panel {
+      margin-top: 24px; padding: 22px; border: 1px solid #dbe9e4; border-radius: 22px;
+      background: linear-gradient(135deg, #e7f3ee, #f0f5ff 100%);
+    }
+    .be-heading { display: flex; align-items: baseline; gap: 12px; margin: 0 0 6px; }
+    .be-heading h2 { margin: 0; color: #193b40; font-size: 23px; line-height: 1.2; letter-spacing: -.02em; }
+    .be-heading span { color: #607978; font-size: 12px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+    .be-intro { margin: 0 0 15px; color: #526b6e; font-size: 14px; line-height: 1.45; }
+    .be-grid { display: grid; grid-template-columns: minmax(0,1fr) 42px minmax(0,1fr); align-items: stretch; }
+    .be-card { padding: 16px 18px; border-radius: 15px; background: rgba(255,255,255,.88); }
+    .be-card.left { border-top: 3px solid #6ebba5; }
+    .be-card.right { border-top: 3px solid #7998e7; }
+    .be-card .sentence { font-size: 21px; }
+    .be-card .meaning { font-size: 14px; }
+    .be-arrow { display: grid; place-items: center; color: #72928d; font-size: 19px; }
+    .be-label { margin: 0 0 7px; color: #738b88; font-size: 10px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .takeaway {
+      display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 13px 16px;
+      border-radius: 14px; background: #fff; color: #50686b; font-size: 13px; line-height: 1.48;
+    }
+    .takeaway-icon { flex: 0 0 auto; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 7px; background: #fff0c9; color: #9c6c0b; font-size: 13px; font-weight: 900; }
+    .takeaway strong { color: #26494b; }
+    .footer { margin: 17px 4px 0; color: #81928f; text-align: center; font-size: 11px; letter-spacing: .025em; }
+
+    @media (max-width: 720px) {
+      body { padding: 14px 11px 26px; }
+      .hero { padding: 27px 23px 25px; border-radius: 21px; }
+      .hero p { max-width: 550px; font-size: 15px; }
+      .flow { position: relative; inset: auto; display: inline-flex; margin: 0 0 17px; }
+      .hero::before { right: -185px; }
+      .hero::after { right: -145px; }
+      .table-head { grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 17px; }
+      .head-cell { min-height: 78px; gap: 10px; padding: 12px; border-radius: 14px; }
+      .head-mark { width: 31px; height: 31px; border-radius: 10px; font-size: 11px; }
+      .head-name { font-size: 15px; }
+      .head-note { font-size: 11px; }
+      .mid-head { display: none; }
+      .pair { grid-template-columns: 1fr; gap: 7px; margin-bottom: 12px; }
+      .pair > .example-card.simple, .pair > .example-card.cont { grid-column: 1; }
+      .verb-pill { position: static; justify-self: start; transform: none; order: -1; min-width: 0; padding: 5px 9px; margin: 0 0 1px 3px; background: #e6efeb; box-shadow: none; }
+      .example-card { padding: 13px 15px; border-radius: 14px; }
+      .sentence { font-size: 18px; }
+      .meaning { margin-top: 5px; font-size: 13px; }
+      .mobile-type { display: block; margin: 0 0 5px; font-size: 9px; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
+      .simple .mobile-type { color: var(--green); }
+      .cont .mobile-type { color: var(--blue); }
+      .be-panel { margin-top: 18px; padding: 17px 14px; border-radius: 18px; }
+      .be-heading { display: block; }
+      .be-heading h2 { font-size: 21px; }
+      .be-heading span { display: block; margin-top: 4px; }
+      .be-grid { grid-template-columns: 1fr; gap: 8px; }
+      .be-arrow { transform: rotate(90deg); height: 12px; }
+      .be-card { padding: 13px 14px; }
+      .be-card .sentence { font-size: 19px; }
+      .takeaway { font-size: 12px; }
+      .footer { font-size: 10px; }
+    }
+    @media (max-width: 390px) {
+      .table-head { gap: 6px; }
+      .head-cell { align-items: flex-start; flex-direction: column; gap: 6px; }
+      .head-mark { width: 26px; height: 26px; }
+      .head-name { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="flow"><span class="dot"></span> STATE <span class="arrow">→</span> ACTION</div>
+      <div class="eyebrow">Грамматика · English</div>
+      <h1>Один глагол —<br>два смысла</h1>
+      <p>Некоторые глаголы состояния употребляются в <strong>Present Continuous</strong>, когда получают значение действия или временной ситуации.</p>
+    </header>
+
+    <section aria-label="Сравнение Present Simple и Present Continuous">
+      <div class="table-head">
+        <div class="head-cell simple">
+          <div class="head-mark">PS</div>
+          <div><div class="head-name">Present Simple</div><div class="head-note">состояние · факт · свойство</div></div>
+        </div>
+        <div class="mid-head">значение</div>
+        <div class="head-cell cont">
+          <div class="head-mark">PC</div>
+          <div><div class="head-name">Present Continuous</div><div class="head-note">действие · процесс · временный смысл</div></div>
+        </div>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · мнение</div>
+          <p class="sentence">I <span class="verb-word">think</span> he’s nice.</p>
+          <p class="meaning"><strong>Я считаю / полагаю,</strong> что он приятный.</p>
+        </article>
+        <div class="verb-pill">THINK</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · обдумывание</div>
+          <p class="sentence">I’m <span class="verb-word">thinking</span> of getting a cat.</p>
+          <p class="meaning"><strong>Я подумываю</strong> завести кота.</p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · владение</div>
+          <p class="sentence">Tom <span class="verb-word">has</span> a motorbike.</p>
+          <p class="meaning"><strong>У Тома есть</strong> мотоцикл.</p>
+        </article>
+        <div class="verb-pill">HAVE</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · занятие</div>
+          <p class="sentence">We’re <span class="verb-word">having</span> fun at the party.</p>
+          <p class="meaning"><strong>Мы хорошо проводим время</strong> на вечеринке.</p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · восприятие</div>
+          <p class="sentence">You can <span class="verb-word">see</span> the beach from my house.</p>
+          <p class="meaning">Из моего дома <strong>виден пляж.</strong></p>
+        </article>
+        <div class="verb-pill">SEE</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · встреча</div>
+          <p class="sentence">She’s <span class="verb-word">seeing</span> her grandparents tonight.</p>
+          <p class="meaning">Сегодня вечером она <strong>навестит бабушку и дедушку.</strong></p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · вкус</div>
+          <p class="sentence">This soup <span class="verb-word">tastes</span> spicy.</p>
+          <p class="meaning">Этот суп <strong>острый на вкус.</strong></p>
+        </article>
+        <div class="verb-pill">TASTE</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · пробовать</div>
+          <p class="sentence">Bob is <span class="verb-word">tasting</span> his tea to see if it’s sweet enough.</p>
+          <p class="meaning">Боб <strong>пробует чай,</strong> чтобы проверить, достаточно ли он сладкий.</p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · запах</div>
+          <p class="sentence">This cheese <span class="verb-word">smells</span> strange.</p>
+          <p class="meaning">Этот сыр <strong>странно пахнет.</strong></p>
+        </article>
+        <div class="verb-pill">SMELL</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · нюхать</div>
+          <p class="sentence">Kendra is <span class="verb-word">smelling</span> the flowers.</p>
+          <p class="meaning">Кендра <strong>нюхает цветы.</strong></p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · казаться</div>
+          <p class="sentence">She <span class="verb-word">appears</span> to be having a great time.</p>
+          <p class="meaning">Кажется, она <strong>прекрасно проводит время.</strong></p>
+        </article>
+        <div class="verb-pill">APPEAR</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · выступать</div>
+          <p class="sentence">Shakira is <span class="verb-word">appearing</span> in London this week.</p>
+          <p class="meaning">На этой неделе Шакира <strong>выступает в Лондоне.</strong></p>
+        </article>
+      </div>
+
+      <div class="pair">
+        <article class="example-card simple">
+          <div class="mobile-type">Present Simple · подходить</div>
+          <p class="sentence">These shoes don’t <span class="verb-word">fit</span> me.</p>
+          <p class="meaning">Эти туфли мне <strong>не подходят по размеру.</strong></p>
+        </article>
+        <div class="verb-pill">FIT</div>
+        <article class="example-card cont">
+          <div class="mobile-type">Present Continuous · устанавливать</div>
+          <p class="sentence">They are <span class="verb-word">fitting</span> an air conditioner in their house.</p>
+          <p class="meaning">Они <strong>устанавливают кондиционер</strong> у себя дома.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="be-panel" aria-labelledby="be-title">
+      <div class="be-heading"><h2 id="be-title">Особый случай: <em>be</em></h2><span>свойство ↔ поведение</span></div>
+      <p class="be-intro">В Continuous глагол <em>be</em> может говорить о временном поведении человека — не о его постоянном качестве.</p>
+      <div class="be-grid">
+        <article class="be-card left">
+          <div class="be-label">Факт / профессия</div>
+          <p class="sentence">He <span class="verb-word">is</span> a doctor.</p>
+          <p class="meaning">Он врач.</p>
+        </article>
+        <div class="be-arrow">→</div>
+        <article class="be-card right">
+          <div class="be-label">Поведение сегодня</div>
+          <p class="sentence">He is <span class="verb-word">being</span> stupid today.</p>
+          <p class="meaning">Сегодня он <strong>ведёт себя глупо</strong> — временно / необычно.</p>
+        </article>
+      </div>
+      <div class="takeaway"><span class="takeaway-icon">!</span><span><strong>Подсказка:</strong> Present Simple чаще описывает состояние, факт или свойство; Present Continuous — действие или особый временный смысл. Это ориентир: всегда смотрите на контекст. Continuous также может обозначать договорённость на будущее, как в <em>tonight</em>.</span></div>
+    </section>
+
+    <p class="footer">Мини-шпаргалка · статичные значения и глаголы действия в английском языке</p>
+  </main>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4c95c4bc87e2aa5',t:'MTc5MjM0NTU2Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
